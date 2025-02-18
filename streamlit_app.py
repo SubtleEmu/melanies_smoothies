@@ -28,6 +28,9 @@ sf_df=my_dataframe.to_pandas()
 #st.dataframe(sf_df)
 #st.stop()
 
+smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
+
 ingredients_list = st.multiselect(
     'Choose up to 5 ingredients:'
     , my_dataframe
@@ -62,7 +65,3 @@ if ingredients_list:
         session.sql(my_insert_stmt).collect()
         
         st.success('Your Smoothie is ordered, '+name_on_order+'!', icon="✅")
-
-
-smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
