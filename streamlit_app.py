@@ -38,28 +38,28 @@ if ingredients_list:
     ingredients_string = ''
 
     # Loop through the selected fruits
-for fruit_chosen in ingredients_list:
-    ingredients_string += fruit_chosen + ' '
+    for fruit_chosen in ingredients_list:
+        ingredients_string += fruit_chosen + ' '
     
     # Make sure to access pd_df correctly, not a Streamlit component
-    search_on = pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
+        search_on = pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
     
     # Proceed with the rest of your logic
-    st.subheader(fruit_chosen + ' Nutrition Information')
-    smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + search_on)
-    st.dataframe(smoothiefroot_response.json(), use_container_width=True)
+        st.subheader(fruit_chosen + ' Nutrition Information')
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + search_on)
+        st.dataframe(smoothiefroot_response.json(), use_container_width=True)
         #smoothie_data = smoothiefroot_response.json()
         #st.dataframe(data=smoothie_data, use_container_width=True)
     #st.write(ingredients_string)
 
-    my_insert_stmt = """ insert into smoothies.public.orders(ingredients, name_on_order, order_ts)
+        my_insert_stmt = """ insert into smoothies.public.orders(ingredients, name_on_order, order_ts)
             values ('""" + ingredients_string + """','"""+name_on_order+ """', CURRENT_TIMESTAMP())"""
     
     #st.write(my_insert_stmt)
     #st.stop()
     
     #st.write(my_insert_stmt)
-    time_to_insert = st.button('Submit Order', key='1')
+    time_to_insert = st.button('Submit Order')
     
     if time_to_insert:
         session.sql(my_insert_stmt).collect()
